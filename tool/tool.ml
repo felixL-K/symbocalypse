@@ -49,10 +49,12 @@ let wait_pid =
         Unix.sleepf timeout;
         did_timeout := true;
         (* we kill the process group id (pgid) which should be equal to pid *)
-        if Env.is_set "LOG_QUERY_PATH" then begin
-            Unix.kill (-pid) 15;
-            Unix.sleepf 1.;
-        end
+        (* begin match Bos.OS.Env.var "QUERY_LOG_PATH" with *)
+        (* | Some _ -> *)
+        Unix.kill (-pid) 15;
+        Unix.sleepf 1.;
+        (* | None -> () *)
+        (* end; *)
         Unix.kill (-pid) 9;
         Sys.set_signal Sys.sigchld Signal_default
       with Sigchld -> ()
